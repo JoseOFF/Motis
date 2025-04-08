@@ -115,7 +115,7 @@ input.material-login-control:invalid:required{
   width:0;
   bottom:1px; 
   position:absolute;
-  background:#fff; 
+  background:#a15d1e; 
   transition:all 0.2s ease; 
 }
 .bar-login::before { left:50%; }
