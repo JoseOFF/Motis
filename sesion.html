@@ -87,12 +87,15 @@
         .single(); // Se espera que solo haya un registro con esas credenciales
 
       // Si ocurre un error o no se encuentran datos, se muestra una alerta de error.
-      if (error || !data) {
-        swal("Error", "Usuario o contraseña incorrectos", "error");
+      if (error) {
+      console.error('Error:', error);  // Logea el error para depuración
+        swal("Error", "Hubo un problema al conectar con la base de datos", "error");
+      } else if (!data) {
+         swal("Error", "Usuario o contraseña incorrectos", "error");
       } else {
-        // Si las credenciales son correctas, redirige a la página home.html
-        window.location.href = "home.html";
+          window.location.href = "home.html";
       }
+
     }
   </script>
 </body>
