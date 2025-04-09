@@ -4,6 +4,7 @@
     <title>Inicio de sesión</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Importación de librerías y hojas de estilos para el diseño visual -->
     <script src="js/sweet-alert.min.js"></script>
     <link rel="stylesheet" href="css/sweet-alert.css">
     <link rel="stylesheet" href="css/material-design-iconic-font.min.css">
@@ -11,8 +12,12 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/jquery.mCustomScrollbar.css">
     <link rel="stylesheet" href="css/style.css">
+    <!-- Importa jQuery desde CDN -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')</script>
+    <script>
+      // Si no se carga jQuery desde CDN, carga una copia local
+      window.jQuery || document.write('<script src="js/jquery-1.11.2.min.js"><\/script>')
+    </script>
     <script src="js/modernizr.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -21,67 +26,74 @@
 </head>
 
 <body>
+  <!-- Contenedor principal de la página de login -->
   <div class="login-container full-cover-background">
     <div class="form-container">
+        <!-- Ícono y título de la página -->
         <p class="text-center" style="margin-top: 17px;">
            <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i>
-       </p>
-       <h4 class="text-center all-tittles" style="margin-bottom: 30px;">inicia sesión con tu cuenta</h4>
+        </p>
+        <h4 class="text-center all-tittles" style="margin-bottom: 30px;">inicia sesión con tu cuenta</h4>
 
-       <!-- Reemplaza esto en tu HTML original -->
-<form onsubmit="return validarLogin(event)">
-  <div class="group-material-login">
-    <input type="text" id="usuario" class="material-login-control" required maxlength="70">
-    <span class="highlight-login"></span>
-    <span class="bar-login"></span>
-    <label><i class="zmdi zmdi-account"></i> &nbsp; Nombres</label>
-  </div><br>
-  <div class="group-material-login">
-    <input type="password" id="contrasena" class="material-login-control" required maxlength="70">
-    <span class="highlight-login"></span>
-    <span class="bar-login"></span>
-    <label><i class="zmdi zmdi-lock"></i> &nbsp; Contraseña</label>
-  </div>
-  <button class="btn-login" type="submit">Ingresar al sistema &nbsp; <i class="zmdi zmdi-arrow-right"></i></button>
-</form>
-
-      
-
+        <!-- Formulario de inicio de sesión. Se usa onsubmit para llamar a la función validarLogin -->
+        <form onsubmit="return validarLogin(event)">
+          <!-- Campo de texto para el nombre de usuario -->
+          <div class="group-material-login">
+            <input type="text" id="usuario" class="material-login-control" required maxlength="70">
+            <span class="highlight-login"></span>
+            <span class="bar-login"></span>
+            <label><i class="zmdi zmdi-account"></i> &nbsp; Nombres</label>
+          </div>
+          <br>
+          <!-- Campo para la contraseña -->
+          <div class="group-material-login">
+            <input type="password" id="contrasena" class="material-login-control" required maxlength="70">
+            <span class="highlight-login"></span>
+            <span class="bar-login"></span>
+            <label><i class="zmdi zmdi-lock"></i> &nbsp; Contraseña</label>
+          </div>
+          <!-- Botón para enviar el formulario -->
+          <button class="btn-login" type="submit">Ingresar al sistema &nbsp; <i class="zmdi zmdi-arrow-right"></i></button>
+        </form>
     </div>   
   </div>
 
-  <!-- SDK de Supabase -->
+  <!-- SDK de Supabase para conectar con la base de datos -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
-<script>
-  const SUPABASE_URL = 'https://nfcfiuyqeoyefwxbrqlm.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mY2ZpdXlxZW95ZWZ3eGJycWxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwODIyNTUsImV4cCI6MjA1OTY1ODI1NX0.hCIaMvRHfwMq6It5j0xFtbM1GJHZx7w-xLVFmfSIbhE';
+  <script>
+    // CONFIGURACIÓN DE SUPABASE:
+    // Reemplaza las siguientes variables con los datos reales de tu proyecto Supabase.
+    const SUPABASE_URL = 'https://nfcfiuyqeoyefwxbrqlm.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mY2ZpdXlxZW95ZWZ3eGJycWxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwODIyNTUsImV4cCI6MjA1OTY1ODI1NX0.hCIaMvRHfwMq6It5j0xFtbM1GJHZx7w-xLVFmfSIbhE';
+    // Inicialización del cliente de Supabase
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // FUNCIONALIDAD DE VALIDACIÓN DEL LOGIN:
+    async function validarLogin(event) {
+      event.preventDefault(); // Evita el envío por defecto del formulario
 
-  async function validarLogin(event) {
-    event.preventDefault();
+      // Recuperación y preparación de los valores ingresados por el usuario
+      const usuario = document.getElementById('usuario').value.trim();
+      const contrasena = document.getElementById('contrasena').value.trim();
 
-    const usuario = document.getElementById('usuario').value.trim();
-    const contrasena = document.getElementById('contrasena').value.trim();
+      // Consulta a la base de datos en la tabla 'Usuarios'.
+      // Se asume que los nombres de las columnas son: 'nombre_usuario' y 'contrasena'.
+      const { data, error } = await supabase
+        .from('Usuarios')
+        .select('*')
+        .eq('nombre_usuario', usuario)
+        .eq('contrasena', contrasena)
+        .single(); // Se espera que solo haya un registro con esas credenciales
 
-    const { data, error } = await supabase
-      .from('Usuarios')
-      .select('*')
-      .eq('nombre_usuario', usuario)
-      .eq('contrasena', contrasena)
-      .single();
-
-    if (error || !data) {
-      swal("Error", "Usuario o contraseña incorrectos", "error");
-    } else {
-      window.location.href = "home.html";
+      // Si ocurre un error o no se encuentran datos, se muestra una alerta de error.
+      if (error || !data) {
+        swal("Error", "Usuario o contraseña incorrectos", "error");
+      } else {
+        // Si las credenciales son correctas, redirige a la página home.html
+        window.location.href = "home.html";
+      }
     }
-  }
-</script>
-
-
-
-
+  </script>
 </body>
 </html>
