@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -21,7 +20,6 @@
     <link rel="icon" href="assets/img/logo.png" type="image/png">
 </head>
 
-
 <body>
   <div class="login-container full-cover-background">
     <div class="form-container">
@@ -29,25 +27,56 @@
            <i class="zmdi zmdi-account-circle zmdi-hc-5x"></i>
        </p>
        <h4 class="text-center all-tittles" style="margin-bottom: 30px;">inicia sesión con tu cuenta</h4>
-       <form action="home.html">
+       <form onsubmit="return validarLogin(event)">
             <div class="group-material-login">
-              <input type="text" class="material-login-control" required="" maxlength="70">
+              <input type="text" id="usuario" class="material-login-control" required="" maxlength="70">
               <span class="highlight-login"></span>
               <span class="bar-login"></span>
               <label><i class="zmdi zmdi-account"></i> &nbsp; Nombres</label>
             </div><br>
             <div class="group-material-login">
-              <input type="password" class="material-login-control" required="" maxlength="70">
+              <input type="password" id="contrasena" class="material-login-control" required="" maxlength="70">
               <span class="highlight-login"></span>
               <span class="bar-login"></span>
               <label><i class="zmdi zmdi-lock"></i> &nbsp; Contraseña</label>
             </div>
             <div class="group-material">
-               
+                <!-- Puedes agregar recordarme o recuperar contraseña aquí si gustas -->
             </div>
             <button class="btn-login" type="submit">Ingresar al sistema &nbsp; <i class="zmdi zmdi-arrow-right"></i></button>
         </form>
     </div>   
   </div>
+
+  <!-- SDK de Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <script>
+    // 🔐 Reemplaza con tus datos reales de Supabase
+    const SUPABASE_URL = 'https://nfcfiuyqeoyefwxbrqlm.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mY2ZpdXlxZW95ZWZ3eGJycWxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwODIyNTUsImV4cCI6MjA1OTY1ODI1NX0.hCIaMvRHfwMq6It5j0xFtbM1GJHZx7w-xLVFmfSIbhE';
+
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    async function validarLogin(event) {
+      event.preventDefault();
+
+      const usuario = document.getElementById('usuario').value;
+      const contrasena = document.getElementById('contrasena').value;
+
+      const { data, error } = await supabase
+        .from('Usuarios')
+        .select('*')
+        .eq('Nombre de usuario', usuario)
+        .eq('Contraseña', contrasena)
+        .single();
+
+      if (error || !data) {
+        swal("Error", "Usuario o contraseña incorrectos", "error");
+      } else {
+        window.location.href = "home.html";
+      }
+    }
+  </script>
 </body>
 </html>
