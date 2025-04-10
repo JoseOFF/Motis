@@ -80,7 +80,7 @@
       .select('*')
       .eq('nombre_usuario', usuario)
       .eq('contrasena', contrasena)
-      .single();
+      .maybeSingle();
 
     if (error) {
       console.error('Error:', error);
