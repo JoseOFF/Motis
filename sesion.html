@@ -61,45 +61,43 @@
   </div>
 
 
+
+  <script>
+    // CONFIGURACIÓN DE SUPABASE:
+    // Reemplaza las siguientes variables con los datos reales de tu proyecto Supabase.
+    const SUPABASE_URL = 'https://nfcfiuyqeoyefwxbrqlm.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mY2ZpdXlxZW95ZWZ3eGJycWxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwODIyNTUsImV4cCI6MjA1OTY1ODI1NX0.hCIaMvRHfwMq6It5j0xFtbM1GJHZx7w-xLVFmfSIbhE';
+    // Inicialización del cliente de Supabase
+    const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // FUNCIONALIDAD DE VALIDACIÓN DEL LOGIN:
+    async function validarLogin(event) {
+      event.preventDefault(); // Evita el envío por defecto del formulario
+
+      // Recuperación y preparación de los valores ingresados por el usuario
+      const usuario = document.getElementById('usuario').value.trim();
+      const contrasena = document.getElementById('contrasena').value.trim();
+
+      // Consulta a la base de datos en la tabla 'Usuarios'.
+      // Se asume que los nombres de las columnas son: 'nombre_usuario' y 'contrasena'.
+      const { data, error } = await supabase
+        .from('Usuarios')
+        .select('*')
+        .eq('nombre_usuario', usuario)
+        .eq('contrasena', contrasena)
+        .single(); // Se espera que solo haya un registro con esas credenciales
+
+      // Si ocurre un error o no se encuentran datos, se muestra una alerta de error.
+      if (error) {
+      console.error('Error:', error);  // Logea el error para depuración
+        swal("Error", "Hubo un problema al conectar con la base de datos", "error");
+      } else if (!data) {
+         swal("Error", "Usuario o contraseña incorrectos", "error");
+      } else {
+          window.location.href = "home.html";
+      }
+
+    }
+  </script>
 </body>
 </html>
-
-
-
-<script>
-  // CONFIGURACIÓN DE SUPABASE:
-  // Reemplaza las siguientes variables con los datos reales de tu proyecto Supabase.
-  const SUPABASE_URL = 'https://nfcfiuyqeoyefwxbrqlm.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5mY2ZpdXlxZW95ZWZ3eGJycWxtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwODIyNTUsImV4cCI6MjA1OTY1ODI1NX0.hCIaMvRHfwMq6It5j0xFtbM1GJHZx7w-xLVFmfSIbhE';
-  // Inicialización del cliente de Supabase
-  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  // FUNCIONALIDAD DE VALIDACIÓN DEL LOGIN:
-  async function validarLogin(event) {
-    event.preventDefault(); // Evita el envío por defecto del formulario
-
-    // Recuperación y preparación de los valores ingresados por el usuario
-    const usuario = document.getElementById('usuario').value.trim();
-    const contrasena = document.getElementById('contrasena').value.trim();
-
-    // Consulta a la base de datos en la tabla 'Usuarios'.
-    // Se asume que los nombres de las columnas son: 'nombre_usuario' y 'contrasena'.
-    const { data, error } = await supabase
-      .from('Usuarios')
-      .select('*')
-      .eq('nombre_usuario', usuario)
-      .eq('contrasena', contrasena)
-      .single(); // Se espera que solo haya un registro con esas credenciales
-
-    // Si ocurre un error o no se encuentran datos, se muestra una alerta de error.
-    if (error) {
-    console.error('Error:', error);  // Logea el error para depuración
-      swal("Error", "Hubo un problema al conectar con la base de datos", "error");
-    } else if (!data) {
-       swal("Error", "Usuario o contraseña incorrectos", "error");
-    } else {
-        window.location.href = "home.html";
-    }
-
-  }
-</script>
