@@ -83,71 +83,70 @@
   <!-- Script para la base de datos -->
   <script src="supabase-init.js"></script>
 
-  <!-- ... todo el contenido previo se mantiene igual hasta el <script> final ... -->
-
-<script>
-  async function registrarUsuario(event) {
-    event.preventDefault();
-
-    const correo = document.getElementById('correo').value.trim();
-    const nombre_usuario = document.getElementById('nombre_usuario').value.trim();
-    const contrasena = document.getElementById('contrasena').value.trim();
-
-    // Verificar si el nombre de usuario ya existe
-    const { data: usuariosPorNombre, error: errorNombre } = await supabaseCliente
-      .from('Usuarios')
-      .select('nombre_usuario')
-      .eq('nombre_usuario', nombre_usuario);
-
-    if (errorNombre) {
-      console.error(errorNombre);
-      swal("Error", "Ocurrió un error al verificar el nombre de usuario", "error");
-      return;
+  <script>
+    async function registrarUsuario(event) {
+      event.preventDefault();
+  
+      const correo = document.getElementById('correo').value.trim();
+      const nombre_usuario = document.getElementById('nombre_usuario').value.trim();
+      const contrasena = document.getElementById('contrasena').value.trim();
+  
+      // Verificar si el nombre de usuario ya existe
+      const { data: usuariosPorNombre, error: errorNombre } = await supabaseCliente
+        .from('Usuarios')
+        .select('nombre_usuario')
+        .eq('nombre_usuario', nombre_usuario);
+  
+      if (errorNombre) {
+        console.error(errorNombre);
+        swal("Error", "Ocurrió un error al verificar el nombre de usuario", "error");
+        return;
+      }
+  
+      if (usuariosPorNombre.length > 0) {
+        swal("Usuario duplicado", "Ya existe una cuenta con este nombre de usuario", "warning");
+        return;
+      }
+  
+      // Verificar si el correo ya existe
+      const { data: usuariosPorCorreo, error: errorCorreo } = await supabaseCliente
+        .from('Usuarios')
+        .select('correo')
+        .eq('correo', correo);
+  
+      if (errorCorreo) {
+        console.error(errorCorreo);
+        swal("Error", "Ocurrió un error al verificar el correo", "error");
+        return;
+      }
+  
+      if (usuariosPorCorreo.length > 0) {
+        swal("Correo duplicado", "Ya existe una cuenta con este correo electrónico", "warning");
+        return;
+      }
+  
+      // Si todo está bien, se registra el usuario
+      const datos = {
+        nombre_usuario,
+        contrasena,
+        correo
+      };
+  
+      const { error: errorInsert } = await supabaseCliente.from('Usuarios').insert([datos]);
+  
+      if (errorInsert) {
+        console.error(errorInsert);
+        swal("Error", "No se pudo registrar el usuario", "error");
+      } else {
+        swal("¡Éxito!", "Usuario registrado correctamente", "success")
+          .then(() => {
+            // Redirige a la página de inicio de sesión
+            window.location.href = "sesion.html";
+          });
+      }
     }
-
-    if (usuariosPorNombre.length > 0) {
-      swal("Usuario duplicado", "Ya existe una cuenta con este nombre de usuario", "warning");
-      return;
-    }
-
-    // Verificar si el correo ya existe
-    const { data: usuariosPorCorreo, error: errorCorreo } = await supabaseCliente
-      .from('Usuarios')
-      .select('correo')
-      .eq('correo', correo);
-
-    if (errorCorreo) {
-      console.error(errorCorreo);
-      swal("Error", "Ocurrió un error al verificar el correo", "error");
-      return;
-    }
-
-    if (usuariosPorCorreo.length > 0) {
-      swal("Correo duplicado", "Ya existe una cuenta con este correo electrónico", "warning");
-      return;
-    }
-
-    // Si todo está bien, se registra el usuario
-    const datos = {
-      nombre_usuario,
-      contrasena,
-      correo
-    };
-
-    const { error: errorInsert } = await supabaseCliente.from('Usuarios').insert([datos]);
-
-    if (errorInsert) {
-      console.error(errorInsert);
-      swal("Error", "No se pudo registrar el usuario", "error");
-    } else {
-      swal("¡Éxito!", "Usuario registrado correctamente", "success")
-        .then(() => {
-          window.location.href = "home.html";
-        });
-    }
-  }
-</script>
-
+  </script>
+  
 
 
 
