@@ -138,10 +138,12 @@
         console.error(errorInsert);
         swal("Error", "No se pudo registrar el usuario", "error");
       } else {
-        swal("¡Éxito!", "Usuario registrado correctamente", "success", function() {
-        window.location.href = "sesion.html";
-      });
-      }
+          swal("¡Éxito!", "Usuario registrado correctamente", "success");
+          // Redirige después de un pequeño retraso (el usuario ya habrá visto el mensaje)
+            setTimeout(() => {
+            window.location.href = "sesion.html";
+          }, 2000); // Espera 2 segundos
+        }
     }
   </script>
   
