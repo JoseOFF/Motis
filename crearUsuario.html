@@ -138,11 +138,9 @@
         console.error(errorInsert);
         swal("Error", "No se pudo registrar el usuario", "error");
       } else {
-        swal("¡Éxito!", "Usuario registrado correctamente", "success")
-          .then(() => {
-            // Redirige a la página de inicio de sesión
-            window.location.href = "sesion.html";
-          });
+        swal("¡Éxito!", "Usuario registrado correctamente", "success", function() {
+        window.location.href = "sesion.html";
+      });
       }
     }
   </script>
